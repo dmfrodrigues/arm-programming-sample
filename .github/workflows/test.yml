@@ -1,0 +1,29 @@
+name: test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install AArch64-GNU (compiler suite)
+      run: sudo apt install -y gcc-aarch64-linux-gnu
+
+    - name: Install QEMU (emulator)
+      run: sudo apt install -y qemu
+
+    - name: Build
+      run: |
+        aarch64-linux-gnu-gcc -static -c main.c -o main.o
+        aarch64-linux-gnu-gcc -static -c main_asm.s -o main_asm.o
+        aarch64-linux-gnu-gcc main.o main_asm.o -o main
+
+    - name: Test
+      run: |
+        qemu-aarch64 main
