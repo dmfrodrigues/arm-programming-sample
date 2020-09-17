@@ -22,7 +22,7 @@ jobs:
       run: |
         aarch64-linux-gnu-gcc -static -c main.c -o main.o
         aarch64-linux-gnu-gcc -static -c main_asm.s -o main_asm.o
-        aarch64-linux-gnu-gcc main.o main_asm.o -o main
+        aarch64-linux-gnu-gcc -static main.o main_asm.o -o main
 
     - name: Test
       run: |
